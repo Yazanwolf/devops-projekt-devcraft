@@ -13,6 +13,12 @@ npm start
 
 Die API läuft auf http://localhost:3000.
 
+## Docker
+```bash
+docker build -t notes-api .
+docker compose up
+```
+
 ## Endpoints
 
 | Method | Endpoint | Beschreibung |
