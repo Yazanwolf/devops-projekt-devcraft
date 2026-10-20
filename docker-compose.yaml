@@ -1,0 +1,10 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: notes-api
+    restart: unless-stopped
+    image: docker-backend
+    ports:
+      - "13000:3000"
