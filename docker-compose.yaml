@@ -1,16 +1,14 @@
 services:
   db:
-    image: postgres:16
+    image: postgres:16-alpine
     volumes:
-      - data:/var/lib/postgresql/data
+      - postgres-data:/var/lib/postgresql/data
     environment:
       POSTGRES_USER: ${DB_USER}
       POSTGRES_PASSWORD: ${DB_PASSWORD}
       POSTGRES_DB: notes
   app:
-    build:
-      context: .
-      dockerfile: Dockerfile
+    build: .
     container_name: notes-api
     restart: unless-stopped
     image: docker-backend
@@ -18,6 +16,8 @@ services:
       - "3000:3000"
     environment:
       DATABASE_URL: ${DB_URL}
+    depends_on:
+      - db
 
 volumes:
-  data:
+  postgres-data:
