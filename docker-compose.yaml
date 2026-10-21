@@ -4,8 +4,8 @@ services:
     volumes:
       - data:/var/lib/postgresql/data
     environment:
-      POSTGRES_USER: notes
-      POSTGRES_PASSWORD: notes
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
       POSTGRES_DB: notes
   app:
     build:
@@ -16,6 +16,8 @@ services:
     image: docker-backend
     ports:
       - "3000:3000"
+    environment:
+      DATABASE_URL: ${DB_URL}
 
 volumes:
   data:
