@@ -1,4 +1,12 @@
 services:
+  db:
+    image: postgres:16
+    volumes:
+      - data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: notes
+      POSTGRES_PASSWORD: notes
+      POSTGRES_DB: notes
   app:
     build:
       context: .
@@ -7,4 +15,7 @@ services:
     restart: unless-stopped
     image: docker-backend
     ports:
-      - "13000:3000"
+      - "3000:3000"
+
+volumes:
+  data:
