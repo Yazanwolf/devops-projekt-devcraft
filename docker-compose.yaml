@@ -10,8 +10,6 @@ services:
   app:
     build: .
     container_name: notes-api
-    restart: unless-stopped
-    image: docker-backend
     ports:
       - "3000:3000"
     environment:
