@@ -2,22 +2,22 @@
 
 Eine einfache REST API für Notizen. Dieser Starter-Code ist die Basis für das DevOps-Projekt "From Code to Production".
 
-## Quick Start
+## Quick Start mit Docker
 
 ```bash
-npm install
 cp .env.example .env
-npx prisma db push
-npm start
+docker compose up --build
 ```
 
-Die API läuft auf http://localhost:3000.
+Compose wartet, bis PostgreSQL bereit ist, wendet die versionierten Prisma-Migrationen an und startet danach die API auf http://localhost:3000.
 
-## Docker
+Zum Stoppen:
+
 ```bash
-docker build -t notes-api .
-docker compose up
+docker compose down
 ```
+
+Die Datenbank wird im benannten Volume `postgres-data` gespeichert und bleibt beim Stoppen erhalten.
 
 ## Endpoints
 
@@ -41,5 +41,5 @@ npm test
 - **Runtime:** Node.js
 - **Framework:** Express
 - **ORM:** Prisma
-- **Datenbank:** SQLite (lokal), PostgreSQL (Docker/Production)
+- **Datenbank:** PostgreSQL
 - **Tests:** Jest + Supertest
