@@ -7,4 +7,6 @@ services:
     restart: unless-stopped
     image: docker-backend
     ports:
-      - "13000:3000"
+      - "3000:3000"
+    environment:
+      - DATABASE_URL=${DATABASE_URL}
