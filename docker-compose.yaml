@@ -1,12 +1,38 @@
 services:
+  db:
+    image: postgres:16-alpine
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: notes
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d notes"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+  migrate:
+    build: .
+    command: ["npx", "prisma", "migrate", "deploy"]
+    environment:
+      DB_URL: ${DB_URL}
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: "no"
   app:
-    build:
-      context: .
-      dockerfile: Dockerfile
+    build: .
     container_name: notes-api
-    restart: unless-stopped
-    image: docker-backend
     ports:
       - "3000:3000"
     environment:
-      - DATABASE_URL=${DATABASE_URL}
+      DB_URL: "postgresql://${DB_USER}:${DB_PASSWORD}@db:5432/notes"
+    depends_on:
+      db:
+        condition: service_healthy
+
+volumes:
+  postgres-data:
