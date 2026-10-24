@@ -4,9 +4,21 @@ Eine einfache REST API für Notizen. Dieser Starter-Code ist die Basis für das 
 
 ## Quick Start mit Docker
 
+Migration Ordner unter Prisma löschen, falls vorhanden.
+Folgenden Befehl darunter ausführen, um die Volumes und gespeicherten Daten im Container zu entfernen.
+
 ```bash
-cp .env.example .env
-docker compose up --build
+docker compose down -v
+```
+
+.env erstellen:
+DB_URL="postgresql://{DB_USER}:{DB_PASSWORD}@localhost:5432/notes"
+DB_USER={username}
+DB_PASSWORD={password}
+
+```bash
+docker compose up -d
+npx prisma migrate dev --name init
 ```
 
 Compose wartet, bis PostgreSQL bereit ist, wendet die versionierten Prisma-Migrationen an und startet danach die API auf http://localhost:3000.
