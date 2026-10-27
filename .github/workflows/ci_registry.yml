@@ -9,14 +9,36 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+
     steps:
       - uses: actions/checkout@v4
+
       - uses: actions/setup-node@v4
         with:
           node-version: 24
+          docker: true
+          
       - run: npm ci
-      - run: npx prisma generate
+
+      - name: Build Docker Image
+        run: docker build -t notes-api .
+
+      - name: Run Docker Compose
+        run: docker compose up -d --build
+        env:
+          DB_USER: ${{ secrets.DB_USER }}
+          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+
+      - name: run prisma migration
+        run: npx prisma migrate deploy
+        env:
+          DB_URL: postgresql://${{ secrets.DB_USER }}:${{ secrets.DB_PASSWORD }}@localhost:5432/notes
+
       - run: npm test
+        env:
+          DB_URL: postgresql://${{ secrets.DB_USER }}:${{ secrets.DB_PASSWORD }}@localhost:5432/notes
+
+      - run: curl http://localhost:3000/health 
 
   build-and-push:
     needs: test
