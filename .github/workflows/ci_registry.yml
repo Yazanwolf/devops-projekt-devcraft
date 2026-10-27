@@ -2,9 +2,7 @@ name: CI
 
 on:
   push:
-    branches: # TODO Modify after testing
-        - main
-        - 'feature/**'
+    branches-ignore: [] # TODO Modify after testing
   pull_request:
     branches: [main]
 
