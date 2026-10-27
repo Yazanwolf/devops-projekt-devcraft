@@ -30,7 +30,7 @@ jobs:
           DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
 
       - name: run prisma migration
-        run: prisma migrate deploy
+        run: npx prisma migrate deploy
         env:
           DB_URL: postgresql://${{ secrets.DB_USER }}:${{ secrets.DB_PASSWORD }}@localhost:5432/notes
 
