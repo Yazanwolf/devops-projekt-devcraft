@@ -1,9 +1,9 @@
 output "server_ip" {
   description = "Öffentliche IP-Adresse des Servers"
-  value       = hcloud_server.app.ipv4_address
+  value       = 2.31.69.214
 }
 
 output "ssh_command" {
   description = "SSH-Befehl zum Verbinden"
-  value       = "ssh root@${hcloud_server.app.ipv4_address}"
+  value       = "ssh root@${ssh root@2.31.69.214}"
 }
