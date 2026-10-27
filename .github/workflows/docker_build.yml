@@ -1,0 +1,23 @@
+name: Docker build
+
+on:
+    push:
+        branches: [main]
+    pull_request:
+        branches: [main]
+
+jobs:
+    build:
+        runs-on: ubuntu-latest
+
+        steps:
+            - uses: actions/checkout@v4
+
+            - name: Build Docker Image
+              run: docker build -t notes-api .
+
+            - name: Run Docker Compose
+              run: docker compose up -d --build
+
+            - name: Test API Health
+              run: curl http://localhost:3000/health
