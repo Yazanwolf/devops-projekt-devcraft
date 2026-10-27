@@ -23,25 +23,11 @@ jobs:
       - name: Build Docker Image
         run: docker build -t notes-api .
 
-      - name: Stop existing containers
-        run: docker compose down --remove-orphans
-        env:
-          DB_USER: ${{ secrets.DB_USER }}
-          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
-          DB_URL: ${{ secrets.DB_URL }}
-
-
       - name: Run Docker Compose
         run: docker compose up -d --build --force-recreate
         env:
           DB_USER: ${{ secrets.DB_USER }}
           DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
-
-      - name: Debug Docker containers
-        if: always()
-        run: |
-          docker compose ps -a
-          docker compose logs app
 
       - name: run prisma migration
         run: npx prisma migrate deploy
@@ -51,11 +37,5 @@ jobs:
       - run: npm test
         env:
           DB_URL: postgresql://${{ secrets.DB_USER }}:${{ secrets.DB_PASSWORD }}@localhost:5432/notes
-
-      - name: Debug Docker containers 2
-        if: always()
-        run: |
-          docker compose ps -a
-          docker compose logs app
 
       - run: curl http://localhost:3000/health 
