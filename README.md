@@ -55,3 +55,15 @@ npm test
 - **ORM:** Prisma
 - **Datenbank:** PostgreSQL
 - **Tests:** Jest + Supertest
+
+## Terraform Config - Terraform.tfvars
+
+- im root terraform.tfvars anlegen
+
+```bash
+hcloud_token = "API_TOKEN_EINTRAGEN"
+ssh_public_key_path = "LOKALER_PFAD_SSH_KEY"
+ssh_key_name = "NAME_DES_TOKENS_FREIE_AUSWAHL"
+server_type  = "cax11"
+location     = "fsn1"
+```
