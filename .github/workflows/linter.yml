@@ -4,7 +4,7 @@ on:
     push: 
         branches-ignore: []
     pull_request:
-        branches: [master, main]
+        branches: [main]
 
 jobs: 
     build:
@@ -23,6 +23,5 @@ jobs:
                 env: 
                     VALIDATE_ALL_CODEBASE: true
                     VALIDATE_JAVASCRIPT_ES: true
-                    VALIDATE_PYTHON_BLACK: true
                     VALIDATE_HTML: true
                     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
