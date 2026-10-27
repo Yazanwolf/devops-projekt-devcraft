@@ -31,5 +31,5 @@ jobs:
 
       - run: npm test
         env:
-          DB_URL: ${{ secrets.DB_URL }}
+          DB_URL: postgresql://${{ secrets.DB_USER }}:${{ secrets.DB_PASSWORD }}@localhost:5432/notes
       - run: curl http://localhost:3000/health 
