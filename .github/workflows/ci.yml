@@ -19,12 +19,15 @@ jobs:
           docker: true
           
       - run: npm ci
-      
+
       - name: Build Docker Image
         run: docker build -t notes-api .
 
       - name: Run Docker Compose
         run: docker compose up -d --build
+        env:
+          DB_USER: ${{ secrets.DB_USER }}
+          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
 
       - run: npm test
       - run: docker build -t notes-api
