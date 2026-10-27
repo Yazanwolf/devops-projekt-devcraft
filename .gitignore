@@ -1,3 +1,4 @@
 node_modules/
 .env
 prisma/*.db
+terraform/terraform.tfvars
