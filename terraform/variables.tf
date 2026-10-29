@@ -7,7 +7,7 @@ variable "hcloud_token" {
 variable "server_type" {
   description = "Hetzner server type"
   type        = string
-  default     = "cx22"
+  default     = "cpx02"
 }
 
 variable "location" {
