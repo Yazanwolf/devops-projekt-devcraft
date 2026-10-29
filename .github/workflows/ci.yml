@@ -9,6 +9,9 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+    env:
+      DB_USER: ${{ secrets.DB_USER }}
+      DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
 
     steps:
       - uses: actions/checkout@v4
@@ -16,28 +19,28 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 24
-          
+          cache: npm
+
       - run: npm ci
 
-      - name: Build Docker Image
-        run: docker build -t notes-api .
+      - name: Start services
+        run: docker compose up -d --build --wait
 
-      - name: Run Docker Compose
-        run: docker compose up -d --build
-        env:
-          DB_USER: ${{ secrets.DB_USER }}
-          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
-
-      - name: run prisma migration
-        run: npx prisma migrate deploy
+      - name: Run tests
+        run: npm test
         env:
           DB_URL: postgresql://${{ secrets.DB_USER }}:${{ secrets.DB_PASSWORD }}@localhost:5432/notes
 
-      - run: npm test
-        env:
-          DB_URL: postgresql://${{ secrets.DB_USER }}:${{ secrets.DB_PASSWORD }}@localhost:5432/notes
+      - name: Health check
+        run: curl --fail --retry 5 --retry-delay 2 --retry-connrefused http://localhost:3000/health
 
-      - run: curl http://localhost:3000/health 
+      - name: Show logs on failure
+        if: failure()
+        run: docker compose logs
+
+      - name: Tear down
+        if: always()
+        run: docker compose down -v
 
   build-and-push:
     needs: test
@@ -64,5 +67,6 @@ jobs:
       - name: Build and push
         uses: docker/build-push-action@v6
         with:
+          context: .
           push: true
-          tags: ghcr.io/${{ env.IMAGE_TAG }}:${{ github.sha }}
+          tags: ${{ env.IMAGE_TAG }}:${{ github.sha }}
