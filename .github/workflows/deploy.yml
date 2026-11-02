@@ -21,7 +21,6 @@ jobs:
           script: |
             cd /opt/notes-api
             docker compose pull
-            docker compose down -d --remove-orphans                #müsste man schauen ob dies nötig ist.
             docker compose up -d
-            docker compose exec -T app npx prisma db push
+            docker compose exec -T app npx prisma db migrate deploy
             echo "Deployment complete!"
