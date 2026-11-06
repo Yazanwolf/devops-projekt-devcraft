@@ -1,6 +1,6 @@
 
 # Stage 1: Dependencies
-FROM node:24-alpine3.24 AS dependencies
+FROM node:24-alpine3.24 AS builder
 
 WORKDIR /app
 
@@ -8,7 +8,6 @@ COPY package*.json ./
 RUN npm ci
 
 # Stage 2: Prisma Client generieren
-FROM dependencies AS builder
 
 COPY . .
 
