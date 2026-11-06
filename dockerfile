@@ -7,14 +7,8 @@ WORKDIR /app
 COPY package*.json ./
 RUN npm ci
 
-# Stage 2: Prisma Client generieren
-
-COPY . .
-
-RUN npx prisma generate
-
-# Stage 3: Production Image
-FROM node:24-alpine3.24 AS production
+# Stage 2: Build
+FROM node:24-alpine3.24
 
 WORKDIR /app
 
