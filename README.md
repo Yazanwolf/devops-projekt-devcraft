@@ -2,6 +2,27 @@
 
 Eine einfache REST API für Notizen. Dieser Starter-Code ist die Basis für das DevOps-Projekt "From Code to Production".
 
+## Architektur
+
+**Docker (lokales Docker-Setup):**
+
+- Express App + PostgreSQL via Docker Compose
+- docker compose up startet alles
+
+**Production (Hetzner VPS):**
+
+- Docker Compose auf dem Server
+- Images werden von ghcr.io gepullt
+- Uptime Kuma überwacht den Health Check
+- Automatisches Deployment via GitHub Actions
+
+## Local Setup
+
+**Installation needed:**
+git
+docker
+npm
+
 ## Quick Start mit Docker
 
 Migration Ordner unter Prisma löschen, falls vorhanden.
@@ -21,7 +42,7 @@ docker compose up -d
 npx prisma migrate dev --name init
 ```
 
-Compose wartet, bis PostgreSQL bereit ist, wendet die versionierten Prisma-Migrationen an und startet danach die API auf http://localhost:3000.
+Compose wartet, bis PostgreSQL bereit ist, wendet die versionierten Prisma-Migrationen an und startet danach die API auf <http://localhost:3000>.
 
 Zum Stoppen:
 
@@ -31,10 +52,44 @@ docker compose down
 
 Die Datenbank wird im benannten Volume `postgres-data` gespeichert und bleibt beim Stoppen erhalten.
 
+## Local Start
+
+git clone <repo-url>
+cd notes-api
+npm i
+docker compose up
+npm start
+
+## Deployment
+
+ssh user@server-ip
+**or**
+ssh -i /path/to/private_key -o IdentitiesOnly=yes root@server-ip
+cd /app
+docker compose pull
+docker compose up -d
+
+## Monitoring
+
+- **Health Check:** http://<server-ip>:3000/health
+- **Uptime Kuma Dashboard:** http://<server-ip>:3000
+- **Logs:** docker compose logs -f app
+
+## Troublesshooting
+
+**Kuma**
+
+- bei Versions Problemen in der Docker-Compose.yml auf dem Server die Version bei :2 am Ende anpassen, z.b. in :3
+- bei Startproblemen die Variablen der .env Files prüfen
+- bei Datenbankfehlern "docker compose ps"
+- bei SSH Key Fehlern, neuen erstellen und verbinden
+- **ACHTUNG KUMA UPTIME** Nutzername und Passwort für alle Berücksichtigen, es kann nur ein USER + PW angelegt werden
+
+
 ## Endpoints
 
 | Method | Endpoint | Beschreibung |
-|--------|----------|-------------|
+| -------- | ---------- | ------------- |
 | GET | /health | Health Check |
 | GET | /notes | Alle Notizen auflisten |
 | POST | /notes | Neue Notiz erstellen |
@@ -55,3 +110,7 @@ npm test
 - **ORM:** Prisma
 - **Datenbank:** PostgreSQL
 - **Tests:** Jest + Supertest
+- **CI/CI:** GitHub Actions
+- **Infrastructure:** Hetzner VPS, Terraform
+- **Container Registry:** GitHub Container Registry ghcr.io
+- **Monitoring:** Uptime Kuma
