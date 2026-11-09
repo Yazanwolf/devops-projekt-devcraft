@@ -80,10 +80,14 @@ docker compose up -d
 **Kuma**
 
 - bei Versions Problemen in der Docker-Compose.yml auf dem Server die Version bei :2 am Ende anpassen, z.b. in :3
-- bei Startproblemen die Variablen der .env Files prüfen
-- bei Datenbankfehlern "docker compose ps"
 - bei SSH Key Fehlern, neuen erstellen und verbinden
 - **ACHTUNG KUMA UPTIME** Nutzername und Passwort für alle Berücksichtigen, es kann nur ein USER + PW angelegt werden
+
+
+**Allgmein**
+
+- bei Startproblemen die Variablen der .env Files prüfen
+- bei Datenbankfehlern "docker compose ps"
 
 
 ## Endpoints
