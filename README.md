@@ -72,7 +72,7 @@ docker compose up -d
 ## Monitoring
 
 - **Health Check:** http://<server-ip>:3000/health
-- **Uptime Kuma Dashboard:** http://<server-ip>:3000
+- **Uptime Kuma Dashboard:** http://<server-ip>:3001
 - **Logs:** docker compose logs -f app
 
 ## Troublesshooting
